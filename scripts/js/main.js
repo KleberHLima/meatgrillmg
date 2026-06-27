@@ -15,7 +15,11 @@ document.addEventListener('DOMContentLoaded', function(){
     const eventTypeSelect = document.getElementById('eventTypeSelect');
     const eventTypeOther = document.getElementById('eventTypeOther');
     const closeModalButtons = document.querySelectorAll('.modal-close, .close-options');
+    const heroSlides = Array.from(document.querySelectorAll('.hero-slide'));
+    const heroDots = Array.from(document.querySelectorAll('.hero-dot'));
     let addressSearchTimer = null;
+    let heroSlideIndex = 0;
+    let heroSliderTimer = null;
 
     if(navToggle && mainNav){
         navToggle.addEventListener('click', () => {
@@ -71,6 +75,37 @@ document.addEventListener('DOMContentLoaded', function(){
             hideAddressSuggestions();
         }
     };
+
+    const showHeroSlide = (index) => {
+        heroSlides.forEach((slide, slideIndex) => {
+            slide.classList.toggle('active', slideIndex === index);
+        });
+        heroDots.forEach((dot, dotIndex) => {
+            dot.classList.toggle('active', dotIndex === index);
+        });
+    };
+
+    const startHeroSlider = () => {
+        if(heroSlides.length <= 1){ return; }
+        if(heroSliderTimer){ clearInterval(heroSliderTimer); }
+        heroSliderTimer = window.setInterval(() => {
+            heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+            showHeroSlide(heroSlideIndex);
+        }, 4000);
+    };
+
+    if(heroSlides.length){
+        showHeroSlide(0);
+        startHeroSlider();
+    }
+
+    heroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            heroSlideIndex = index;
+            showHeroSlide(heroSlideIndex);
+            startHeroSlider();
+        });
+    });
 
     quoteButtons.forEach(button => button.addEventListener('click', openQuoteModal));
     closeModalButtons.forEach(button => button.addEventListener('click', closeQuoteModal));
