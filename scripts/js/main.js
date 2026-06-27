@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
+    const backToTopBtn = document.getElementById('backToTop');
     const navToggle = document.querySelector('.nav-toggle');
     const mainNav = document.querySelector('.main-nav');
     const quoteButtons = document.querySelectorAll('.open-quote-modal');
@@ -20,6 +21,19 @@ document.addEventListener('DOMContentLoaded', function(){
     let addressSearchTimer = null;
     let heroSlideIndex = 0;
     let heroSliderTimer = null;
+
+    if(backToTopBtn){
+        window.addEventListener('scroll', () => {
+            if(window.pageYOffset > 200){
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({top:0, behavior:'smooth'});
+        });
+    }
 
     if(navToggle && mainNav){
         navToggle.addEventListener('click', () => {
